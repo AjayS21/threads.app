@@ -9,12 +9,14 @@ import LeftSidebar from "@/components/shared/LeftSidebar";
 import Bottombar from "@/components/shared/Bottombar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Topbar from "@/components/shared/Topbar";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Threads",
   description: "A Next.js 13 Meta Threads application",
+  
 };
 
 export default function RootLayout({
@@ -23,6 +25,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <>
+    <Script
+        strategy="lazyOnload"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+      />
+
+      <Script strategy="lazyOnload">
+        {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                    page_path: window.location.pathname,
+                    });
+                `}
+      </Script>
     <ClerkProvider
       appearance={{
         baseTheme: dark,
@@ -45,5 +63,6 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
+    </>
   );
 }
